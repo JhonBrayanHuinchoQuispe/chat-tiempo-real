@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: chat-tiempo-real
+    env: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: chat-db
+          property: host
+      - key: DB_NAME
+        fromDatabase:
+          name: chat-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: chat-db
+          property: user
+      - key: DB_PASS
+        fromDatabase:
+          name: chat-db
+          property: password
+      - key: DB_PORT
+        fromDatabase:
+          name: chat-db
+          property: port
+
+databases:
+  - name: chat-db
+    databaseName: chat_tiempo_real
+    user: chat_user
