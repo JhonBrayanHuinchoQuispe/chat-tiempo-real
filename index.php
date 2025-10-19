@@ -24,41 +24,78 @@ function getDBConnection() {
 
 // ===== ENDPOINT DE DIAGNÓSTICO =====
 if (isset($_GET['debug']) && $_GET['debug'] === 'true') {
-    header('Content-Type: application/json');
+    echo '<!DOCTYPE html>
+<html>
+<head>
+    <title>Diagnóstico del Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+        .warning { color: #ffc107; font-weight: bold; }
+        .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007bff; background: #f8f9fa; }
+        pre { background: #e9ecef; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Diagnóstico del Chat en Tiempo Real</h1>
+        <p><strong>Timestamp:</strong> ' . date('Y-m-d H:i:s') . '</p>
+        
+        <div class="section">
+            <h2>📋 Variables de Entorno</h2>';
     
-    $diagnostico = [
-        'timestamp' => date('Y-m-d H:i:s'),
-        'environment_variables' => [
-            'DB_HOST' => $_ENV['DB_HOST'] ?? 'NO_SET',
-            'DB_NAME' => $_ENV['DB_NAME'] ?? 'NO_SET', 
-            'DB_USER' => $_ENV['DB_USER'] ?? 'NO_SET',
-            'DB_PASS' => $_ENV['DB_PASS'] ? 'SET' : 'NO_SET'
-        ],
-        'database_connection' => 'TESTING...'
+    $env_vars = [
+        'DB_HOST' => $_ENV['DB_HOST'] ?? 'NO_SET',
+        'DB_NAME' => $_ENV['DB_NAME'] ?? 'NO_SET', 
+        'DB_USER' => $_ENV['DB_USER'] ?? 'NO_SET',
+        'DB_PASS' => $_ENV['DB_PASS'] ? 'SET (****)' : 'NO_SET'
     ];
+    
+    foreach ($env_vars as $key => $value) {
+        $class = ($value === 'NO_SET') ? 'error' : 'success';
+        echo "<p><strong>$key:</strong> <span class=\"$class\">$value</span></p>";
+    }
+    
+    echo '</div><div class="section">
+            <h2>🗄️ Conexión a Base de Datos</h2>';
     
     try {
         $pdo = getDBConnection();
         if ($pdo) {
-            $diagnostico['database_connection'] = 'SUCCESS';
+            echo '<p class="success">✅ Conexión exitosa a MySQL</p>';
             
             // Verificar tabla mensajes
             $stmt = $pdo->query("SHOW TABLES LIKE 'mensajes'");
-            $diagnostico['table_mensajes'] = $stmt->rowCount() > 0 ? 'EXISTS' : 'NOT_EXISTS';
-            
-            if ($diagnostico['table_mensajes'] === 'EXISTS') {
+            if ($stmt->rowCount() > 0) {
+                echo '<p class="success">✅ Tabla "mensajes" existe</p>';
+                
                 $stmt = $pdo->query("SELECT COUNT(*) as count FROM mensajes");
                 $result = $stmt->fetch();
-                $diagnostico['messages_count'] = $result['count'];
+                echo '<p class="success">📊 Mensajes en BD: ' . $result['count'] . '</p>';
+                
+                // Mostrar últimos 3 mensajes
+                $stmt = $pdo->query("SELECT usuario, mensaje, timestamp FROM mensajes ORDER BY timestamp DESC LIMIT 3");
+                $mensajes = $stmt->fetchAll();
+                if ($mensajes) {
+                    echo '<h3>📝 Últimos mensajes:</h3><pre>';
+                    foreach ($mensajes as $msg) {
+                        echo htmlspecialchars($msg['timestamp'] . ' - ' . $msg['usuario'] . ': ' . $msg['mensaje']) . "\n";
+                    }
+                    echo '</pre>';
+                }
+            } else {
+                echo '<p class="error">❌ Tabla "mensajes" NO existe</p>';
             }
         } else {
-            $diagnostico['database_connection'] = 'FAILED - PDO is null';
+            echo '<p class="error">❌ Error: No se pudo conectar a la base de datos</p>';
         }
     } catch (Exception $e) {
-        $diagnostico['database_connection'] = 'ERROR: ' . $e->getMessage();
+        echo '<p class="error">❌ Error de conexión: ' . htmlspecialchars($e->getMessage()) . '</p>';
     }
     
-    echo json_encode($diagnostico, JSON_PRETTY_PRINT);
+    echo '</div></div></body></html>';
     exit;
 }
 
