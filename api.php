@@ -10,6 +10,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
+// Endpoint temporal de diagnóstico
+if (isset($_GET['debug']) && $_GET['debug'] === 'true') {
+    $diagnostico = [
+        'timestamp' => date('Y-m-d H:i:s'),
+        'environment_variables' => [
+            'DB_HOST' => $_ENV['DB_HOST'] ?? 'NO_SET',
+            'DB_NAME' => $_ENV['DB_NAME'] ?? 'NO_SET', 
+            'DB_USER' => $_ENV['DB_USER'] ?? 'NO_SET',
+            'DB_PASS' => $_ENV['DB_PASS'] ? 'SET' : 'NO_SET'
+        ],
+        'database_connection' => 'TESTING...'
+    ];
+    
+    try {
+        $pdo = getDBConnection();
+        if ($pdo) {
+            $diagnostico['database_connection'] = 'SUCCESS';
+            
+            // Verificar tabla mensajes
+            $stmt = $pdo->query("SHOW TABLES LIKE 'mensajes'");
+            $diagnostico['table_mensajes'] = $stmt->rowCount() > 0 ? 'EXISTS' : 'NOT_EXISTS';
+            
+            if ($diagnostico['table_mensajes'] === 'EXISTS') {
+                $stmt = $pdo->query("SELECT COUNT(*) as count FROM mensajes");
+                $result = $stmt->fetch();
+                $diagnostico['messages_count'] = $result['count'];
+            }
+        } else {
+            $diagnostico['database_connection'] = 'FAILED - PDO is null';
+        }
+    } catch (Exception $e) {
+        $diagnostico['database_connection'] = 'ERROR: ' . $e->getMessage();
+    }
+    
+    echo json_encode($diagnostico, JSON_PRETTY_PRINT);
+    exit;
+}
+
 function leerMensajes() {
     $pdo = getDBConnection();
     if (!$pdo) {
