@@ -8,7 +8,7 @@ $port = 8000;
 
 // Configuración de MySQL
 $db_host = "localhost";
-$db_name = "chat_tiempo_real";
+$db_name = "sistemasic_chat";
 $db_user = "root";
 $db_pass = "";
 $db_port = 3306;
