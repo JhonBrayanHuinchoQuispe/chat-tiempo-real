@@ -6,12 +6,12 @@ $pusher_secret = "TU_PUSHER_SECRET";
 $pusher_cluster = "mt1";
 $port = 8000;
 
-// Configuración de PostgreSQL
+// Configuración de MySQL
 $db_host = "localhost";
-$db_name = "chat_tiempo_real";
-$db_user = "postgres";
+$db_name = "sistemasic_chat";
+$db_user = "root";
 $db_pass = "";
-$db_port = 5432;
+$db_port = 3306;
 
 // Cargar variables del archivo .env
 function loadEnv() {
@@ -72,7 +72,7 @@ define('PUSHER_SECRET', $pusher_secret);
 define('PUSHER_CLUSTER', $pusher_cluster);
 define('PORT', $port);
 
-// Definir constantes de PostgreSQL
+// Definir constantes de MySQL
 define('DB_HOST', $db_host);
 define('DB_NAME', $db_name);
 define('DB_USER', $db_user);
@@ -82,7 +82,7 @@ define('DB_PORT', $db_port);
 // Función para conectar a la base de datos
 function getDBConnection() {
     try {
-        $dsn = "pgsql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME;
+        $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
         $pdo = new PDO($dsn, DB_USER, DB_PASS, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
