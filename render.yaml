@@ -9,7 +9,7 @@ services:
       - key: DB_NAME
         value: sistemasic_chat
       - key: DB_USER
-    value: 436286
+        value: 436286
       - key: DB_PASS
         value: brayan933783039
       - key: DB_PORT
