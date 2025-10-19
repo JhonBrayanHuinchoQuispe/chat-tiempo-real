@@ -5,27 +5,12 @@ services:
     dockerfilePath: ./Dockerfile
     envVars:
       - key: DB_HOST
-        fromDatabase:
-          name: chat-db
-          property: host
+        value: mysql-sistemasic.alwaysdata.net
       - key: DB_NAME
-        fromDatabase:
-          name: chat-db
-          property: database
+        value: sistemasic_chat
       - key: DB_USER
-        fromDatabase:
-          name: chat-db
-          property: user
+        value: sistemasic
       - key: DB_PASS
-        fromDatabase:
-          name: chat-db
-          property: password
+        value: brayan933783039
       - key: DB_PORT
-        fromDatabase:
-          name: chat-db
-          property: port
-
-databases:
-  - name: chat-db
-    databaseName: chat_tiempo_real
-    user: chat_user
+        value: 3306
