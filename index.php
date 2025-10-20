@@ -80,28 +80,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💬 Chat Tiempo Real - Moderno</title>
+    <title>Chat en Tiempo Real</title>
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="icon" href="static/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>💬 Chat Tiempo Real</h1>
-            <p>Conectado y funcionando perfectamente</p>
+    <div class="contenedor-chat">
+        <div class="cabecera">
+            <h1>Chat en Tiempo Real</h1>
         </div>
         
-        <div class="messages" id="messages">
-            <div class="message">
-                <strong>Sistema:</strong> Cargando mensajes...
-            </div>
+        <div class="area-mensajes" id="mensajes">
+            <!-- Los mensajes se cargarán aquí -->
         </div>
         
-        <div class="form">
-            <input type="text" id="usuario" placeholder="👤 Tu nombre" required>
-            <textarea id="mensaje" placeholder="✍️ Escribe tu mensaje..." rows="3" required></textarea>
-            <button onclick="enviarMensaje()">🚀 Enviar Mensaje</button>
-            <button onclick="cargarMensajes()">🔄 Actualizar Chat</button>
+        <div class="area-entrada">
+            <form class="formulario-mensaje" onsubmit="enviarMensaje(event)">
+                <div class="campos-entrada">
+                    <input type="text" id="usuario" name="usuario" placeholder="Tu nombre" required>
+                    <textarea id="mensaje" name="mensaje" placeholder="Escribe un mensaje..." required></textarea>
+                </div>
+                <button id="enviar" type="submit">Enviar</button>
+                <button id="actualizar" type="button" onclick="cargarMensajes()">Actualizar Chat</button>
+            </form>
         </div>
         
         <div class="status" id="status"></div>
