@@ -1,4 +1,21 @@
 <?php
+// ===== DIAGNÓSTICO INMEDIATO =====
+if (isset($_GET['diagnostico']) || isset($_GET['debug']) || isset($_GET['test'])) {
+    echo "<!DOCTYPE html><html><head><title>Diagnóstico</title></head><body>";
+    echo "<h1>🔍 DIAGNÓSTICO FUNCIONANDO</h1>";
+    echo "<p><strong>Timestamp:</strong> " . date('Y-m-d H:i:s') . "</p>";
+    echo "<p><strong>Parámetros GET:</strong> " . print_r($_GET, true) . "</p>";
+    echo "<p><strong>Variables de entorno:</strong></p>";
+    echo "<pre>";
+    echo "PUSHER_APP_ID: " . (getenv('PUSHER_APP_ID') ?: 'NO DEFINIDA') . "\n";
+    echo "PUSHER_KEY: " . (getenv('PUSHER_KEY') ?: 'NO DEFINIDA') . "\n";
+    echo "DB_HOST: " . (getenv('DB_HOST') ?: 'NO DEFINIDA') . "\n";
+    echo "DB_NAME: " . (getenv('DB_NAME') ?: 'NO DEFINIDA') . "\n";
+    echo "</pre>";
+    echo "</body></html>";
+    exit;
+}
+
 // ===== CONFIGURACIÓN COMPLETA HARDCODEADA =====
 
 // Configuración de Pusher (hardcodeada para Render)
