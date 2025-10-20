@@ -1,11 +1,20 @@
 <?php
+// ===== CONFIGURACIÓN COMPLETA HARDCODEADA =====
+
+// Configuración de Pusher (hardcodeada para Render)
+define('PUSHER_APP_ID', '2062974');
+define('PUSHER_KEY', 'ed728998da5272b7373e');
+define('PUSHER_SECRET', '49cbb5047f31a0b4f03c');
+define('PUSHER_CLUSTER', 'sa1');
+
 // ===== CONFIGURACIÓN DE BASE DE DATOS =====
 function getDBConnection() {
-    $host = $_ENV['DB_HOST'] ?? 'mysql-sistemasic.alwaysdata.net';
-    $dbname = $_ENV['DB_NAME'] ?? 'sistemasic_chat';
-    $username = $_ENV['DB_USER'] ?? '436286';
-    $password = $_ENV['DB_PASS'] ?? 'brayan933783039';
-    $port = $_ENV['DB_PORT'] ?? '3306';
+    // CONFIGURACIÓN HARDCODEADA PARA RENDER
+    $host = 'jhonbrayanhuinchoquispe.alwaysdata.net';  // HOST CORRECTO
+    $dbname = 'jhonbrayanhuinchoquispe_sistemasic_chat';  // BD CORRECTA
+    $username = 'jhonbrayanhuinchoquispe';  // USUARIO CORRECTO
+    $password = 'brayan933783039';  // PASSWORD CORRECTO
+    $port = '3306';
     
     try {
         $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
@@ -22,80 +31,170 @@ function getDBConnection() {
     }
 }
 
-// ===== ENDPOINT DE DIAGNÓSTICO =====
-if (isset($_GET['debug']) && $_GET['debug'] === 'true') {
-    echo '<!DOCTYPE html>
-<html>
-<head>
-    <title>Diagnóstico del Chat</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .success { color: #28a745; font-weight: bold; }
-        .error { color: #dc3545; font-weight: bold; }
-        .warning { color: #ffc107; font-weight: bold; }
-        .section { margin: 20px 0; padding: 15px; border-left: 4px solid #007bff; background: #f8f9fa; }
-        pre { background: #e9ecef; padding: 10px; border-radius: 4px; overflow-x: auto; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🔍 Diagnóstico del Chat en Tiempo Real</h1>
-        <p><strong>Timestamp:</strong> ' . date('Y-m-d H:i:s') . '</p>
-        
-        <div class="section">
-            <h2>📋 Variables de Entorno</h2>';
-    
-    $env_vars = [
-        'DB_HOST' => $_ENV['DB_HOST'] ?? 'NO_SET',
-        'DB_NAME' => $_ENV['DB_NAME'] ?? 'NO_SET', 
-        'DB_USER' => $_ENV['DB_USER'] ?? 'NO_SET',
-        'DB_PASS' => $_ENV['DB_PASS'] ? 'SET (****)' : 'NO_SET'
-    ];
-    
-    foreach ($env_vars as $key => $value) {
-        $class = ($value === 'NO_SET') ? 'error' : 'success';
-        echo "<p><strong>$key:</strong> <span class=\"$class\">$value</span></p>";
-    }
-    
-    echo '</div><div class="section">
-            <h2>🗄️ Conexión a Base de Datos</h2>';
-    
-    try {
-        $pdo = getDBConnection();
-        if ($pdo) {
-            echo '<p class="success">✅ Conexión exitosa a MySQL</p>';
-            
-            // Verificar tabla mensajes
-            $stmt = $pdo->query("SHOW TABLES LIKE 'mensajes'");
-            if ($stmt->rowCount() > 0) {
-                echo '<p class="success">✅ Tabla "mensajes" existe</p>';
-                
-                $stmt = $pdo->query("SELECT COUNT(*) as count FROM mensajes");
-                $result = $stmt->fetch();
-                echo '<p class="success">📊 Mensajes en BD: ' . $result['count'] . '</p>';
-                
-                // Mostrar últimos 3 mensajes
-                $stmt = $pdo->query("SELECT usuario, mensaje, timestamp FROM mensajes ORDER BY timestamp DESC LIMIT 3");
-                $mensajes = $stmt->fetchAll();
-                if ($mensajes) {
-                    echo '<h3>📝 Últimos mensajes:</h3><pre>';
-                    foreach ($mensajes as $msg) {
-                        echo htmlspecialchars($msg['timestamp'] . ' - ' . $msg['usuario'] . ': ' . $msg['mensaje']) . "\n";
+// ===== ENDPOINT DE DIAGNÓSTICO COMPLETO =====
+if (isset($_GET['diagnostico']) || isset($_GET['debug'])) {
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>🔍 Diagnóstico Completo - Chat en Tiempo Real</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+            .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+            .success { color: #28a745; background: #d4edda; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 4px solid #28a745; }
+            .error { color: #dc3545; background: #f8d7da; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 4px solid #dc3545; }
+            .warning { color: #856404; background: #fff3cd; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 4px solid #ffc107; }
+            .info { color: #0c5460; background: #d1ecf1; padding: 12px; border-radius: 6px; margin: 10px 0; border-left: 4px solid #17a2b8; }
+            .section { margin: 25px 0; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6; }
+            pre { background: #e9ecef; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 14px; }
+            h1 { color: #333; text-align: center; margin-bottom: 30px; }
+            h2 { color: #495057; border-bottom: 2px solid #007bff; padding-bottom: 8px; margin-top: 0; }
+            .timestamp { text-align: center; color: #6c757d; margin-bottom: 20px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🔍 Diagnóstico Completo del Chat</h1>
+            <div class="timestamp">
+                <strong>Ejecutado:</strong> <?= date('Y-m-d H:i:s') ?> (Hora del servidor)
+            </div>
+
+            <!-- CONFIGURACIÓN HARDCODEADA -->
+            <div class="section">
+                <h2>⚙️ Configuración Hardcodeada</h2>
+                <div class="success">✅ <strong>Pusher App ID:</strong> <?= PUSHER_APP_ID ?></div>
+                <div class="success">✅ <strong>Pusher Key:</strong> <?= PUSHER_KEY ?></div>
+                <div class="success">✅ <strong>Pusher Cluster:</strong> <?= PUSHER_CLUSTER ?></div>
+                <div class="info"><strong>🔒 Pusher Secret:</strong> CONFIGURADO (****)</div>
+            </div>
+
+            <!-- CONFIGURACIÓN DE BASE DE DATOS -->
+            <div class="section">
+                <h2>🗄️ Configuración de Base de Datos</h2>
+                <div class="success">✅ <strong>DB_HOST:</strong> jhonbrayanhuinchoquispe.alwaysdata.net</div>
+                <div class="success">✅ <strong>DB_NAME:</strong> jhonbrayanhuinchoquispe_sistemasic_chat</div>
+                <div class="success">✅ <strong>DB_USER:</strong> jhonbrayanhuinchoquispe</div>
+                <div class="success">✅ <strong>DB_PORT:</strong> 3306</div>
+                <div class="info"><strong>🔒 DB_PASS:</strong> CONFIGURADO (****)</div>
+            </div>
+
+            <!-- PRUEBA DE CONEXIÓN -->
+            <div class="section">
+                <h2>🔌 Prueba de Conexión a Base de Datos</h2>
+                <?php
+                try {
+                    $pdo = getDBConnection();
+                    if ($pdo) {
+                        echo '<div class="success">✅ <strong>CONEXIÓN EXITOSA</strong> a MySQL</div>';
+                        
+                        // Verificar tabla mensajes
+                        $stmt = $pdo->query("SHOW TABLES LIKE 'mensajes'");
+                        if ($stmt->rowCount() > 0) {
+                            echo '<div class="success">✅ Tabla "mensajes" existe</div>';
+                            
+                            // Contar mensajes
+                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM mensajes");
+                            $result = $stmt->fetch();
+                            echo '<div class="info">📊 <strong>Total de mensajes:</strong> ' . $result['count'] . '</div>';
+                            
+                            // Mostrar estructura de la tabla
+                            $stmt = $pdo->query("DESCRIBE mensajes");
+                            $columns = $stmt->fetchAll();
+                            echo '<div class="info"><strong>📋 Estructura de la tabla:</strong><br><pre>';
+                            foreach ($columns as $col) {
+                                echo sprintf("%-15s %-20s %s\n", $col['Field'], $col['Type'], $col['Key'] ? "({$col['Key']})" : "");
+                            }
+                            echo '</pre></div>';
+                            
+                            // Últimos mensajes
+                            $stmt = $pdo->query("SELECT usuario, mensaje, timestamp FROM mensajes ORDER BY timestamp DESC LIMIT 5");
+                            $mensajes = $stmt->fetchAll();
+                            if ($mensajes) {
+                                echo '<div class="info"><strong>📝 Últimos 5 mensajes:</strong><br><pre>';
+                                foreach ($mensajes as $msg) {
+                                    echo htmlspecialchars($msg['timestamp'] . ' | ' . $msg['usuario'] . ': ' . substr($msg['mensaje'], 0, 50) . (strlen($msg['mensaje']) > 50 ? '...' : '')) . "\n";
+                                }
+                                echo '</pre></div>';
+                            } else {
+                                echo '<div class="warning">⚠️ No hay mensajes en la base de datos</div>';
+                            }
+                            
+                            // Test de inserción
+                            try {
+                                $stmt = $pdo->prepare("INSERT INTO mensajes (usuario, mensaje) VALUES (?, ?)");
+                                $test_user = "TEST_" . date('His');
+                                $test_message = "Mensaje de prueba - " . date('Y-m-d H:i:s');
+                                $stmt->execute([$test_user, $test_message]);
+                                echo '<div class="success">✅ Test de inserción exitoso (ID: ' . $pdo->lastInsertId() . ')</div>';
+                                
+                                // Eliminar el mensaje de prueba
+                                $stmt = $pdo->prepare("DELETE FROM mensajes WHERE usuario = ? AND mensaje = ?");
+                                $stmt->execute([$test_user, $test_message]);
+                                echo '<div class="info">🧹 Mensaje de prueba eliminado</div>';
+                            } catch (Exception $e) {
+                                echo '<div class="error">❌ Error en test de inserción: ' . htmlspecialchars($e->getMessage()) . '</div>';
+                            }
+                            
+                        } else {
+                            echo '<div class="error">❌ Tabla "mensajes" NO existe</div>';
+                            echo '<div class="warning">💡 <strong>Solución:</strong> Ejecutar el script database.sql en tu base de datos AlwaysData</div>';
+                        }
+                    } else {
+                        echo '<div class="error">❌ Error: No se pudo conectar a la base de datos</div>';
                     }
-                    echo '</pre>';
+                } catch (Exception $e) {
+                    echo '<div class="error">❌ Error de conexión: ' . htmlspecialchars($e->getMessage()) . '</div>';
+                    
+                    // Análisis del error
+                    $error = $e->getMessage();
+                    echo '<div class="warning"><strong>🔍 Análisis del Error:</strong><br>';
+                    if (strpos($error, 'Access denied') !== false) {
+                        echo '• <strong>Credenciales incorrectas:</strong> Usuario o contraseña inválidos<br>';
+                        echo '• <strong>Solución:</strong> Verificar credenciales en AlwaysData';
+                    } elseif (strpos($error, 'Unknown database') !== false) {
+                        echo '• <strong>Base de datos no existe:</strong> El nombre de la BD es incorrecto<br>';
+                        echo '• <strong>Solución:</strong> Crear la base de datos en AlwaysData';
+                    } elseif (strpos($error, 'Connection refused') !== false || strpos($error, 'timed out') !== false) {
+                        echo '• <strong>Servidor no accesible:</strong> Host o puerto incorrectos<br>';
+                        echo '• <strong>Solución:</strong> Verificar host en AlwaysData';
+                    } else {
+                        echo '• <strong>Error desconocido:</strong> ' . htmlspecialchars($error);
+                    }
+                    echo '</div>';
                 }
-            } else {
-                echo '<p class="error">❌ Tabla "mensajes" NO existe</p>';
-            }
-        } else {
-            echo '<p class="error">❌ Error: No se pudo conectar a la base de datos</p>';
-        }
-    } catch (Exception $e) {
-        echo '<p class="error">❌ Error de conexión: ' . htmlspecialchars($e->getMessage()) . '</p>';
-    }
-    
-    echo '</div></div></body></html>';
+                ?>
+            </div>
+
+            <!-- INFORMACIÓN DEL SERVIDOR -->
+            <div class="section">
+                <h2>🖥️ Información del Servidor</h2>
+                <div class="info">
+                    <strong>PHP Version:</strong> <?= PHP_VERSION ?><br>
+                    <strong>Servidor:</strong> <?= $_SERVER['SERVER_SOFTWARE'] ?? 'No disponible' ?><br>
+                    <strong>Timezone:</strong> <?= date_default_timezone_get() ?><br>
+                    <strong>Memory Limit:</strong> <?= ini_get('memory_limit') ?><br>
+                    <strong>Max Execution Time:</strong> <?= ini_get('max_execution_time') ?>s
+                </div>
+            </div>
+
+            <!-- PRÓXIMOS PASOS -->
+            <div class="section">
+                <h2>🎯 Próximos Pasos</h2>
+                <div class="info">
+                    <strong>Si todo está bien:</strong><br>
+                    1. <a href="/" style="color: #007bff; text-decoration: none;">🚀 Ir al Chat</a><br>
+                    2. Probar envío y recepción de mensajes<br><br>
+                    
+                    <strong>Si hay errores:</strong><br>
+                    1. Verificar credenciales en AlwaysData<br>
+                    2. Asegurar que la base de datos existe<br>
+                    3. Ejecutar database.sql si es necesario
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    <?php
     exit;
 }
 
