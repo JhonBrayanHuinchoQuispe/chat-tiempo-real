@@ -1,5 +1,5 @@
 <?php
-// Actualización forzada para Render
+// Actualización forzada para Render - 2025-10-19 23:45:00
 header('Content-Type: text/html; charset=utf-8');
 
 date_default_timezone_set('America/Lima');
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat en Tiempo Real</title>
-    <link rel="stylesheet" href="static/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="static/css/style.css?v=20251019234500">
     <link rel="icon" href="static/favicon.ico" type="image/x-icon">
 </head>
 <body>
