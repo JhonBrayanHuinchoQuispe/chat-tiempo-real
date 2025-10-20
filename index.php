@@ -112,21 +112,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     </div>
 
     <script>
-        function mostrarStatus(mensaje, tipo = 'info') {
-            const status = document.getElementById('status');
-            if (status) {
-                status.textContent = mensaje;
-                status.className = 'status ' + tipo;
-                setTimeout(() => status.textContent = '', 3000);
-            }
-        }
+        let usuariosColores = {};
+        let contadorUsuarios = 0;
 
         function cargarMensajes() {
             fetch('?action=messages')
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
-                        mostrarStatus('Error: ' + data.error, 'error');
+                        console.error('Error:', data.error);
                         return;
                     }
                     
@@ -137,8 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                     
                     if (data.messages && data.messages.length > 0) {
                         data.messages.forEach(msg => {
+                            // Asignar tipo de usuario consistente
+                            if (!usuariosColores[msg.usuario]) {
+                                contadorUsuarios++;
+                                usuariosColores[msg.usuario] = (contadorUsuarios % 2) + 1;
+                            }
+                            
                             const div = document.createElement('div');
-                            div.className = 'mensaje usuario-' + (Math.random() > 0.5 ? '1' : '2');
+                            div.className = 'mensaje usuario-' + usuariosColores[msg.usuario];
                             div.innerHTML = `
                                 <div class="usuario">${msg.usuario}</div>
                                 <div class="contenido-mensaje">${msg.mensaje}</div>
@@ -150,11 +150,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                     } else {
                         container.innerHTML = '<div class="sin-mensajes">No hay mensajes aún</div>';
                     }
-                    
-                    mostrarStatus('Mensajes actualizados', 'success');
                 })
                 .catch(error => {
-                    mostrarStatus('Error de conexión: ' + error.message, 'error');
+                    console.error('Error de conexión:', error);
                 });
         }
 
@@ -165,7 +163,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
             const mensaje = document.getElementById('mensaje').value.trim();
             
             if (!usuario || !mensaje) {
-                mostrarStatus('Por favor completa todos los campos', 'error');
                 return false;
             }
             
@@ -181,16 +178,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    mostrarStatus('Error: ' + data.error, 'error');
+                    console.error('Error:', data.error);
                     return;
                 }
                 
                 document.getElementById('mensaje').value = '';
-                mostrarStatus('Mensaje enviado', 'success');
-                setTimeout(cargarMensajes, 500);
+                setTimeout(cargarMensajes, 300);
             })
             .catch(error => {
-                mostrarStatus('Error de envío: ' + error.message, 'error');
+                console.error('Error de envío:', error);
             });
             
             return false;
@@ -200,8 +196,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         document.addEventListener('DOMContentLoaded', function() {
             cargarMensajes();
             
-            // Auto-actualizar cada 10 segundos
-            setInterval(cargarMensajes, 10000);
+            // Auto-actualizar cada 5 segundos (más frecuente)
+            setInterval(cargarMensajes, 5000);
         });
     </script>
 </body>
