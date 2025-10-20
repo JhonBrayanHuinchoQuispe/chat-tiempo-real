@@ -1,29 +1,11 @@
 {
-    "name": "chat-realtime/app",
-    "description": "Chat en tiempo real con PHP y MySQL",
+    "name": "chat-tiempo-real/app",
+    "description": "Chat en tiempo real con PHP",
     "type": "project",
     "require": {
-        "php": ">=7.4",
-        "ext-pdo": "*",
-        "ext-pdo_mysql": "*",
-        "ext-json": "*",
-        "ext-curl": "*"
-    },
-    "require-dev": {
         "php": ">=7.4"
     },
-    "autoload": {
-        "files": [
-            "config.php"
-        ]
-    },
     "scripts": {
-        "start": "php -S 0.0.0.0:$PORT",
-        "setup-db": "mysql -u $DB_USER -p$DB_PASS -h $DB_HOST < database.sql"
-    },
-    "config": {
-        "platform": {
-            "php": "8.1"
-        }
+        "start": "php -S 0.0.0.0:$PORT"
     }
 }

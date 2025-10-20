@@ -3,22 +3,4 @@ services:
     name: chat-tiempo-real
     env: docker
     dockerfilePath: ./Dockerfile
-    envVars:
-      - key: DB_HOST
-        value: jhonbrayanhuinchoquispe.alwaysdata.net
-      - key: DB_NAME
-        value: jhonbrayanhuinchoquispe_sistemasic_chat
-      - key: DB_USER
-        value: jhonbrayanhuinchoquispe
-      - key: DB_PASS
-        value: brayan933783039
-      - key: DB_PORT
-        value: 3306
-      - key: PUSHER_APP_ID
-        value: 2062974
-      - key: PUSHER_KEY
-        value: ed728998da5272b7373e
-      - key: PUSHER_SECRET
-        value: 49cbb5047f31a0b4f03c
-      - key: PUSHER_CLUSTER
-        value: sa1
+    plan: free
