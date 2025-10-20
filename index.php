@@ -7,7 +7,7 @@ header('Content-Type: text/html; charset=utf-8');
 function getDB() {
     try {
         $pdo = new PDO(
-            'mysql:host=mysql-jhonbrayanhuinchoquispe.alwaysdata.net;dbname=jhonbrayanhuinchoquispe_sistemasic;charset=utf8mb4',
+            'mysql:host=mysql-jhonbrayanhuinchoquispe.alwaysdata.net;dbname=jhonbrayanhuinchoquispe_sistemasic_chat;charset=utf8mb4',
             'jhonbrayanhuinchoquispe',
             'brayan933783039',
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
