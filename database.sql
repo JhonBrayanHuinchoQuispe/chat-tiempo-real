@@ -2,13 +2,17 @@
 -- ==========================================
 -- CHAT EN TIEMPO REAL - BASE DE DATOS
 -- ==========================================
--- Proyecto: Sistema de Chat con PostgreSQL
+-- Proyecto: Sistema de Chat con MySQL
 -- Fecha: 2025-01-18
 -- ==========================================
 
+-- Crear base de datos
+CREATE DATABASE IF NOT EXISTS chat_tiempo_real;
+USE chat_tiempo_real;
+
 -- Tabla principal para mensajes del chat
 CREATE TABLE IF NOT EXISTS mensajes (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     usuario VARCHAR(100) NOT NULL,
     mensaje TEXT NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -17,17 +21,17 @@ CREATE TABLE IF NOT EXISTS mensajes (
 );
 
 -- Índices para mejor rendimiento
-CREATE INDEX IF NOT EXISTS idx_timestamp ON mensajes (timestamp);
-CREATE INDEX IF NOT EXISTS idx_usuario ON mensajes (usuario);
+CREATE INDEX idx_timestamp ON mensajes (timestamp);
+CREATE INDEX idx_usuario ON mensajes (usuario);
 
 -- Vista para consultar mensajes recientes
-CREATE OR REPLACE VIEW mensajes_recientes AS
+CREATE VIEW mensajes_recientes AS
 SELECT 
     id,
     usuario,
     mensaje,
     timestamp,
-    TO_CHAR(timestamp, 'HH24:MI') as hora
+    DATE_FORMAT(timestamp, '%H:%i') as hora
 FROM mensajes 
 ORDER BY timestamp DESC 
 LIMIT 50;

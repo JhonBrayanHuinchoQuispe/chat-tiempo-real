@@ -1,9 +1,9 @@
 <?php
 // Configuración de Pusher
-$pusher_app_id = "TU_APP_ID";
-$pusher_key = "TU_PUSHER_KEY";
-$pusher_secret = "TU_PUSHER_SECRET";
-$pusher_cluster = "mt1";
+$pusher_app_id = "2062974";
+$pusher_key = "ed728998da5272b7373e";
+$pusher_secret = "49cbb5047f31a0b4f03c";
+$pusher_cluster = "sa1";
 $port = 8000;
 
 // Configuración de MySQL
@@ -82,15 +82,28 @@ define('DB_PORT', $db_port);
 // Función para conectar a la base de datos
 function getDBConnection() {
     try {
-        $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
-        $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+        // Configuración específica para AlwaysData
+        $host = DB_HOST;
+        $port = 3306; // Puerto específico para AlwaysData
+        $dbname = DB_NAME;
+        
+        $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
+        
+        $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
-        ]);
+            PDO::ATTR_TIMEOUT => 30,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4",
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+        ];
+        
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         return $pdo;
     } catch (PDOException $e) {
         error_log("Error de conexión a la base de datos: " . $e->getMessage());
+        error_log("DSN usado: mysql:host=" . DB_HOST . ";port=3306;dbname=" . DB_NAME);
+        error_log("Usuario: " . DB_USER);
         return null;
     }
 }
