@@ -1,6 +1,7 @@
 <?php
 // ===== CHAT SIMPLE SIN PUSHER ===== 
 // Versión 2.0 - Forzar redespliegue
+// ACTUALIZACIÓN: Sincronización GitHub - Sin Pusher
 header('Content-Type: text/html; charset=utf-8');
 
 // Configuración de base de datos
