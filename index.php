@@ -32,7 +32,7 @@ function getDBConnection() {
 }
 
 // ===== ENDPOINT DE DIAGNÓSTICO COMPLETO =====
-if (isset($_GET['diagnostico']) || isset($_GET['debug'])) {
+if (isset($_GET['diagnostico']) || isset($_GET['debug']) || isset($_GET['test'])) {
     ?>
     <!DOCTYPE html>
     <html>
