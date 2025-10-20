@@ -13,10 +13,10 @@ RewriteRule ^.*$ index.php [L]
 AddType application/javascript .js
 AddType text/css .css
 
-# Configuración de headers para CORS
-Header always set Access-Control-Allow-Origin "*"
-Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
-Header always set Access-Control-Allow-Headers "Content-Type"
+# Configuración de headers para CORS (manejado por PHP)
+# Header always set Access-Control-Allow-Origin "*"
+# Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+# Header always set Access-Control-Allow-Headers "Content-Type"
 
 # Configuración de cache
 <IfModule mod_expires.c>

@@ -1,6 +1,9 @@
 <?php
 // FORZAR ACTUALIZACIÓN RENDER - VERSIÓN NUEVA - 2025-10-19 23:47:00
 header('Content-Type: text/html; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 
 date_default_timezone_set('America/Lima');
 
