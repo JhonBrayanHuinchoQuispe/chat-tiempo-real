@@ -1,0 +1,11 @@
+{
+    "name": "chat-tiempo-real/app",
+    "description": "Chat en tiempo real con PHP",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "scripts": {
+        "start": "php -S 0.0.0.0:$PORT"
+    }
+}
