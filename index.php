@@ -1,5 +1,5 @@
 <?php
-// Actualización forzada para Render - 2025-10-19 23:45:00
+// FORZAR ACTUALIZACIÓN RENDER - VERSIÓN NUEVA - 2025-10-19 23:47:00
 header('Content-Type: text/html; charset=utf-8');
 
 date_default_timezone_set('America/Lima');
