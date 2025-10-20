@@ -1,50 +1,38 @@
 <?php
+// Test de conexión con usuario 436286 y diferentes contraseñas
 header('Content-Type: application/json');
 
-// Probando con el usuario existente 436286 y diferentes contraseñas
 $passwords = [
-    'brayan933783039',
-    '',  // contraseña vacía
-    '436286',  // mismo que el usuario
-    'sistemasic',
-    'password',
-    '123456'
+    'brayan933783039',  // La contraseña que tienes
+    '',                 // Contraseña vacía
+    '436286',          // Mismo que el usuario
+    'sistemasic',      // Nombre del proyecto
+    'password',        // Contraseña común
+    '123456'           // Contraseña común
 ];
 
 $results = [];
 
 foreach ($passwords as $index => $password) {
     try {
-        $pdo = new PDO(
-            "mysql:host=mysql-sistemasic.alwaysdata.net;dbname=sistemasic_chat;charset=utf8mb4",
-            '436286',
-            $password,
-            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-        );
+        $dsn = "mysql:host=mysql-sistemasic.alwaysdata.net;dbname=sistemasic_chat;charset=utf8mb4";
+        $pdo = new PDO($dsn, '436286', $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        // Si llegamos aquí, la conexión fue exitosa
         $results[] = [
             'test' => $index + 1,
-            'host' => 'mysql-sistemasic.alwaysdata.net',
-            'dbname' => 'sistemasic_chat',
             'username' => '436286',
             'password' => $password === '' ? '(vacía)' : $password,
-            'status' => 'SUCCESS ✅',
-            'message' => 'Conexión exitosa - ¡ESTA ES LA CONTRASEÑA CORRECTA!'
+            'status' => 'ÉXITO ✅',
+            'message' => '¡CONTRASEÑA CORRECTA ENCONTRADA!'
         ];
         
-        // Probamos una consulta simple
-        $stmt = $pdo->query("SHOW TABLES");
-        $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        $results[count($results)-1]['tables'] = $tables;
-        
-        break; // Si encontramos la contraseña correcta, no seguimos probando
+        // Si encontramos la contraseña correcta, paramos aquí
+        break;
         
     } catch (PDOException $e) {
         $results[] = [
             'test' => $index + 1,
-            'host' => 'mysql-sistemasic.alwaysdata.net',
-            'dbname' => 'sistemasic_chat',
             'username' => '436286',
             'password' => $password === '' ? '(vacía)' : $password,
             'status' => 'ERROR ❌',
