@@ -10,6 +10,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
+// Cargar variables de entorno
+loadEnv();
+
+// Definir constantes de Pusher
+define('PUSHER_APP_ID', $pusher_app_id);
+define('PUSHER_KEY', $pusher_key);
+define('PUSHER_SECRET', $pusher_secret);
+define('PUSHER_CLUSTER', $pusher_cluster);
+
+// Función para obtener conexión a la base de datos
+function getDBConnection() {
+    global $db_host, $db_name, $db_user, $db_pass, $db_port;
+    
+    try {
+        $dsn = "mysql:host=$db_host;port=$db_port;dbname=$db_name;charset=utf8mb4";
+        $pdo = new PDO($dsn, $db_user, $db_pass, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            PDO::MYSQL_ATTR_SSL_CA => false
+        ]);
+        return $pdo;
+    } catch (PDOException $e) {
+        error_log("Error de conexión BD: " . $e->getMessage());
+        return null;
+    }
+}
+
 // Endpoint temporal de diagnóstico
 if (isset($_GET['debug']) && $_GET['debug'] === 'true') {
     $diagnostico = [

@@ -1,9 +1,9 @@
 <?php
 // Configuración de Pusher
-$pusher_app_id = "TU_APP_ID";
-$pusher_key = "TU_PUSHER_KEY";
-$pusher_secret = "TU_PUSHER_SECRET";
-$pusher_cluster = "mt1";
+$pusher_app_id = "2062974";
+$pusher_key = "ed728998da5272b7373e";
+$pusher_secret = "49cbb5047f31a0b4f03c";
+$pusher_cluster = "sa1";
 $port = 8000;
 
 // Configuración de MySQL
