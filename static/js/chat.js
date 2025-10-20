@@ -16,15 +16,20 @@ function cargarMensajes() {
             container.innerHTML = '';
             
             if (data.messages && data.messages.length > 0) {
+                // Obtener el nombre del usuario actual
+                const usuarioActual = document.getElementById('usuario').value.trim();
+                
                 data.messages.forEach(msg => {
-                    // Asignar tipo de usuario consistente
-                    if (!usuariosColores[msg.usuario]) {
-                        contadorUsuarios++;
-                        usuariosColores[msg.usuario] = (contadorUsuarios % 2) + 1;
-                    }
-                    
                     const div = document.createElement('div');
-                    div.className = 'mensaje usuario-' + usuariosColores[msg.usuario];
+                    
+                    // Determinar si es el usuario actual o no
+                    if (usuarioActual && msg.usuario === usuarioActual) {
+                        // Mensaje del usuario actual - a la derecha
+                        div.className = 'mensaje usuario-1';
+                    } else {
+                        // Mensaje de otros usuarios - a la izquierda
+                        div.className = 'mensaje usuario-2';
+                    }
                     
                     // Formatear timestamp a hora 
                     const fecha = new Date(msg.timestamp);
@@ -60,6 +65,7 @@ function enviarMensaje(event) {
     const mensaje = document.getElementById('mensaje').value.trim();
     
     if (!usuario || !mensaje) {
+        alert('Por favor, ingresa tu nombre y un mensaje');
         return false;
     }
     
@@ -76,20 +82,41 @@ function enviarMensaje(event) {
     .then(data => {
         if (data.error) {
             console.error('Error:', data.error);
+            alert('Error al enviar mensaje: ' + data.error);
             return;
         }
         
+        // Limpiar el campo de mensaje
         document.getElementById('mensaje').value = '';
-        setTimeout(cargarMensajes, 300);
+        
+        // Recargar mensajes inmediatamente
+        cargarMensajes();
     })
     .catch(error => {
         console.error('Error de envío:', error);
+        alert('Error de conexión. Verifica tu internet.');
     });
     
     return false;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Cargar nombre guardado del usuario
+    const nombreGuardado = localStorage.getItem('chatUsuario');
+    if (nombreGuardado) {
+        document.getElementById('usuario').value = nombreGuardado;
+    }
+    
+    // Guardar nombre cuando cambie
+    document.getElementById('usuario').addEventListener('blur', function() {
+        const nombre = this.value.trim();
+        if (nombre) {
+            localStorage.setItem('chatUsuario', nombre);
+            // Recargar mensajes para actualizar posicionamiento
+            cargarMensajes();
+        }
+    });
+    
     cargarMensajes();
     setInterval(cargarMensajes, 3000);
     
