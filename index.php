@@ -1,5 +1,6 @@
 <?php
-// ===== CHAT SIMPLE SIN PUSHER =====
+// ===== CHAT SIMPLE SIN PUSHER ===== 
+// Versión 2.0 - Forzar redespliegue
 header('Content-Type: text/html; charset=utf-8');
 
 // Configuración de base de datos
