@@ -22,13 +22,12 @@ function cargarMensajes() {
                 data.messages.forEach(msg => {
                     const div = document.createElement('div');
                     
-                    // Determinar si es el usuario actual o no
+                    // Si es el usuario actual, va a la derecha (usuario-1)
+                    // Si es otro usuario, va a la izquierda (usuario-2)
                     if (usuarioActual && msg.usuario === usuarioActual) {
-                        // Mensaje del usuario actual - a la derecha
-                        div.className = 'mensaje usuario-1';
+                        div.className = 'mensaje usuario-1'; // Derecha
                     } else {
-                        // Mensaje de otros usuarios - a la izquierda
-                        div.className = 'mensaje usuario-2';
+                        div.className = 'mensaje usuario-2'; // Izquierda
                     }
                     
                     // Formatear timestamp a hora 
@@ -65,7 +64,6 @@ function enviarMensaje(event) {
     const mensaje = document.getElementById('mensaje').value.trim();
     
     if (!usuario || !mensaje) {
-        alert('Por favor, ingresa tu nombre y un mensaje');
         return false;
     }
     
@@ -82,41 +80,20 @@ function enviarMensaje(event) {
     .then(data => {
         if (data.error) {
             console.error('Error:', data.error);
-            alert('Error al enviar mensaje: ' + data.error);
             return;
         }
         
-        // Limpiar el campo de mensaje
         document.getElementById('mensaje').value = '';
-        
-        // Recargar mensajes inmediatamente
-        cargarMensajes();
+        setTimeout(cargarMensajes, 300);
     })
     .catch(error => {
         console.error('Error de envío:', error);
-        alert('Error de conexión. Verifica tu internet.');
     });
     
     return false;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Cargar nombre guardado del usuario
-    const nombreGuardado = localStorage.getItem('chatUsuario');
-    if (nombreGuardado) {
-        document.getElementById('usuario').value = nombreGuardado;
-    }
-    
-    // Guardar nombre cuando cambie
-    document.getElementById('usuario').addEventListener('blur', function() {
-        const nombre = this.value.trim();
-        if (nombre) {
-            localStorage.setItem('chatUsuario', nombre);
-            // Recargar mensajes para actualizar posicionamiento
-            cargarMensajes();
-        }
-    });
-    
     cargarMensajes();
     setInterval(cargarMensajes, 3000);
     

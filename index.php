@@ -6,32 +6,17 @@ date_default_timezone_set('America/Lima');
 
 function getDB() {
     try {
-        // Configuración de base de datos con manejo de errores mejorado
-        $host = 'mysql-sistemasic.alwaysdata.net';
-        $dbname = 'sistemasic_chat';
-        $username = '436286';
-        $password = 'brayan933783039';
-        
         $pdo = new PDO(
-            "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
-            $username,
-            $password,
-            [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
-            ]
+            'mysql:host=mysql-sistemasic.alwaysdata.net;dbname=sistemasic_chat',
+            '436286',
+            'brayan933783039',
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
         
         $pdo->exec("SET time_zone = '-05:00'");
         return $pdo;
-    } catch (PDOException $e) {
-        error_log("Error de conexión DB: " . $e->getMessage());
-        // En caso de error, devolver null pero no fallar completamente
-        return null;
     } catch (Exception $e) {
-        error_log("Error general: " . $e->getMessage());
+        error_log("Error de conexión DB: " . $e->getMessage());
         return null;
     }
 }

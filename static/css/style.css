@@ -11,8 +11,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0;
-    padding: 0;
 }
 
 .contenedor-chat {
@@ -231,11 +229,9 @@ body {
     background: #a8a8a8;
 }
 
-/* Responsive Design para Móviles */
 @media (max-width: 768px) {
     body {
         padding: 10px;
-        align-items: stretch;
     }
     
     .contenedor-chat {
@@ -261,19 +257,6 @@ body {
     .contenido-mensaje-wrapper {
         max-width: 85%;
         padding: 10px 14px;
-        border-radius: 15px;
-    }
-    
-    .usuario {
-        font-size: 0.75rem;
-    }
-    
-    .contenido-mensaje {
-        font-size: 0.9rem;
-    }
-    
-    .timestamp {
-        font-size: 0.65rem;
     }
     
     .area-entrada {
@@ -283,7 +266,6 @@ body {
     .fila-entrada {
         flex-direction: column;
         gap: 10px;
-        align-items: stretch;
     }
     
     .fila-entrada #usuario {
@@ -292,46 +274,34 @@ body {
     }
     
     .fila-entrada #mensaje {
-        width: 100%;
         order: 2;
         min-height: 60px;
-        max-height: 120px;
     }
     
     .fila-entrada .btn {
-        width: 100%;
         order: 3;
-        height: 50px;
+        width: 100%;
+        padding: 15px;
         font-size: 1rem;
-        font-weight: 700;
-    }
-    
-    .btn {
-        padding: 14px 20px;
-        font-size: 0.95rem;
     }
 }
 
 @media (max-width: 480px) {
-    .contenedor-chat {
-        height: 100vh;
-    }
-    
-    .encabezado {
-        padding: 12px;
-    }
-    
-    .encabezado h1 {
-        font-size: 1.2rem;
-    }
-    
-    .area-mensajes {
-        padding: 12px;
-    }
-    
     .contenido-mensaje-wrapper {
         max-width: 90%;
         padding: 8px 12px;
+    }
+    
+    .contenido-mensaje {
+        font-size: 0.9rem;
+    }
+    
+    .usuario {
+        font-size: 0.75rem;
+    }
+    
+    .timestamp {
+        font-size: 0.65rem;
     }
     
     .area-entrada {
@@ -340,70 +310,5 @@ body {
     
     .fila-entrada #mensaje {
         min-height: 50px;
-        max-height: 100px;
-    }
-    
-    .fila-entrada .btn {
-        height: 45px;
-        font-size: 0.9rem;
-    }
-}
-
-/* Para pantallas muy pequeñas (menos de 360px) */
-@media (max-width: 360px) {
-    .encabezado {
-        padding: 10px;
-    }
-    
-    .encabezado h1 {
-        font-size: 1.1rem;
-    }
-    
-    .area-mensajes {
-        padding: 10px;
-    }
-    
-    .area-entrada {
-        padding: 10px;
-    }
-    
-    .contenido-mensaje-wrapper {
-        max-width: 95%;
-        padding: 6px 10px;
-        font-size: 0.85rem;
-    }
-    
-    .fila-entrada #usuario,
-    .fila-entrada #mensaje {
-        padding: 10px 14px;
-        font-size: 0.9rem;
-    }
-    
-    .fila-entrada .btn {
-        height: 42px;
-        font-size: 0.85rem;
-        padding: 12px 16px;
-    }
-}
-
-/* Mejoras para dispositivos táctiles */
-@media (hover: none) and (pointer: coarse) {
-    .btn {
-        min-height: 44px;
-        min-width: 44px;
-    }
-    
-    .fila-entrada #usuario,
-    .fila-entrada #mensaje {
-        min-height: 44px;
-    }
-    
-    .btn:hover {
-        transform: none;
-    }
-    
-    .btn:active {
-        transform: scale(0.98);
-        transition: transform 0.1s ease;
     }
 }
