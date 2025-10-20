@@ -1,47 +1,33 @@
 <?php
 header('Content-Type: application/json');
 
-// Configuraciones a probar basadas en diferentes formatos de AlwaysData
+// Test específico con la configuración del phpMyAdmin
 $configs = [
-    // Formato estándar sin mysql- prefix
+    // Configuración EXACTA del phpMyAdmin
     [
-        'host' => 'jhonbrayanhuinchoquispe.alwaysdata.net',
-        'dbname' => 'jhonbrayanhuinchoquispe_sistemasic_chat',
-        'username' => 'jhonbrayanhuinchoquispe',
-        'password' => 'brayan933783039'
-    ],
-    // Formato con mysql- prefix (recomendado por AlwaysData)
-    [
-        'host' => 'mysql-jhonbrayanhuinchoquispe.alwaysdata.net',
-        'dbname' => 'jhonbrayanhuinchoquispe_sistemasic_chat',
-        'username' => 'jhonbrayanhuinchoquispe',
-        'password' => 'brayan933783039'
-    ],
-    // Probando con nombre de BD más corto
-    [
-        'host' => 'mysql-jhonbrayanhuinchoquispe.alwaysdata.net',
+        'host' => 'mysql-sistemasic.alwaysdata.net',
         'dbname' => 'sistemasic_chat',
         'username' => 'jhonbrayanhuinchoquispe',
         'password' => 'brayan933783039'
     ],
-    // Probando con cuenta más corta (posible)
+    // Probando con usuario más corto
     [
-        'host' => 'mysql-jhonbrayan.alwaysdata.net',
-        'dbname' => 'jhonbrayan_sistemasic_chat',
-        'username' => 'jhonbrayan',
+        'host' => 'mysql-sistemasic.alwaysdata.net',
+        'dbname' => 'sistemasic_chat',
+        'username' => 'sistemasic',
         'password' => 'brayan933783039'
     ],
-    // Probando con formato de cuenta ID (si el nombre es muy largo)
+    // Probando sin mysql- prefix
     [
-        'host' => 'mysql-jhonbrayanhuinchoquispe.alwaysdata.net',
-        'dbname' => 'jhonbrayanhuinchoquispe_sistemasic',
+        'host' => 'sistemasic.alwaysdata.net',
+        'dbname' => 'sistemasic_chat',
         'username' => 'jhonbrayanhuinchoquispe',
         'password' => 'brayan933783039'
     ],
     // Probando con puerto explícito
     [
-        'host' => 'mysql-jhonbrayanhuinchoquispe.alwaysdata.net:3306',
-        'dbname' => 'jhonbrayanhuinchoquispe_sistemasic_chat',
+        'host' => 'mysql-sistemasic.alwaysdata.net:3306',
+        'dbname' => 'sistemasic_chat',
         'username' => 'jhonbrayanhuinchoquispe',
         'password' => 'brayan933783039'
     ]
