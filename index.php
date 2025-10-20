@@ -1,8 +1,8 @@
 <?php
-// CHAT EXACTO COMO IMAGEN DE REFERENCIA
 header('Content-Type: text/html; charset=utf-8');
 
-// Configuración de base de datos
+date_default_timezone_set('America/Lima');
+
 function getDB() {
     try {
         $pdo = new PDO(
@@ -11,6 +11,8 @@ function getDB() {
             'brayan933783039',
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
+        
+        $pdo->exec("SET time_zone = '-05:00'");
         return $pdo;
     } catch (Exception $e) {
         error_log("Error de conexión DB: " . $e->getMessage());
@@ -18,7 +20,6 @@ function getDB() {
     }
 }
 
-// API para enviar mensaje
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'send') {
     header('Content-Type: application/json');
     
@@ -49,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
-// API para obtener mensajes
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'messages') {
     header('Content-Type: application/json');
     
@@ -84,133 +84,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 <body>
     <div class="contenedor-chat">
         <div class="encabezado">
-            <h1>Chat en Tiempo Real</h1>
-        </div>
+             <h1>Chat en Tiempo Real</h1>
+         </div>
         
         <div id="mensajes" class="area-mensajes">
-            <!-- Los mensajes aparecerán aquí -->
         </div>
         
         <div class="area-entrada">
             <form onsubmit="return enviarMensaje(event);">
-                <div class="grupo-entrada">
+                <div class="fila-entrada">
                     <input type="text" id="usuario" placeholder="Tu nombre" required>
-                </div>
-                <div class="grupo-entrada">
                     <textarea id="mensaje" placeholder="Escribe un mensaje..." required></textarea>
-                </div>
-                <div class="botones">
                     <button type="submit" class="btn btn-primario">Enviar</button>
-                    <button type="button" class="btn btn-secundario" onclick="cargarMensajes()">Actualizar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        let usuariosColores = {};
-        let contadorUsuarios = 0;
-
-        function cargarMensajes() {
-            fetch('?action=messages')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        console.error('Error:', data.error);
-                        return;
-                    }
-                    
-                    const container = document.getElementById('mensajes');
-                    if (!container) return;
-                    
-                    container.innerHTML = '';
-                    
-                    if (data.messages && data.messages.length > 0) {
-                        data.messages.forEach(msg => {
-                            // Asignar tipo de usuario consistente
-                            if (!usuariosColores[msg.usuario]) {
-                                contadorUsuarios++;
-                                usuariosColores[msg.usuario] = (contadorUsuarios % 2) + 1;
-                            }
-                            
-                            const div = document.createElement('div');
-                            div.className = 'mensaje usuario-' + usuariosColores[msg.usuario];
-                            
-                            // Formatear timestamp
-                            const fecha = new Date(msg.timestamp);
-                            const tiempo = fecha.toLocaleTimeString('es-ES', {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            });
-                            
-                            div.innerHTML = `
-                                <div class="usuario">${msg.usuario}</div>
-                                <div class="contenido-mensaje">${msg.mensaje}</div>
-                                <div class="timestamp">${tiempo}</div>
-                            `;
-                            container.appendChild(div);
-                        });
-                        container.scrollTop = container.scrollHeight;
-                    } else {
-                        container.innerHTML = '<div class="sin-mensajes">No hay mensajes aún</div>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error de conexión:', error);
-                });
-        }
-
-        function enviarMensaje(event) {
-            if (event) event.preventDefault();
-            
-            const usuario = document.getElementById('usuario').value.trim();
-            const mensaje = document.getElementById('mensaje').value.trim();
-            
-            if (!usuario || !mensaje) {
-                return false;
-            }
-            
-            const formData = new FormData();
-            formData.append('action', 'send');
-            formData.append('usuario', usuario);
-            formData.append('mensaje', mensaje);
-            
-            fetch('', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    console.error('Error:', data.error);
-                    return;
-                }
-                
-                document.getElementById('mensaje').value = '';
-                setTimeout(cargarMensajes, 300);
-            })
-            .catch(error => {
-                console.error('Error de envío:', error);
-            });
-            
-            return false;
-        }
-
-        // Cargar mensajes al inicio
-        document.addEventListener('DOMContentLoaded', function() {
-            cargarMensajes();
-            
-            // Auto-actualizar cada 3 segundos
-            setInterval(cargarMensajes, 3000);
-        });
-
-        // Enter para enviar mensaje
-        document.getElementById('mensaje').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                enviarMensaje();
-            }
-        });
-    </script>
+    <script src="static/js/chat.js"></script>
 </body>
 </html>
