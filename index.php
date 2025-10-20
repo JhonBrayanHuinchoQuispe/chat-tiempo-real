@@ -86,34 +86,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 </head>
 <body>
     <div class="contenedor-chat">
-        <div class="cabecera">
+        <div class="encabezado">
             <h1>Chat en Tiempo Real</h1>
         </div>
         
-        <div class="area-mensajes" id="mensajes">
-            <!-- Los mensajes se cargarán aquí -->
+        <div id="mensajes" class="area-mensajes">
+            <!-- Los mensajes aparecerán aquí -->
         </div>
         
         <div class="area-entrada">
-            <form class="formulario-mensaje" onsubmit="enviarMensaje(event)">
-                <div class="campos-entrada">
-                    <input type="text" id="usuario" name="usuario" placeholder="Tu nombre" required>
-                    <textarea id="mensaje" name="mensaje" placeholder="Escribe un mensaje..." required></textarea>
+            <form onsubmit="return enviarMensaje(event);">
+                <div class="grupo-entrada">
+                    <input type="text" id="usuario" placeholder="Tu nombre" required>
                 </div>
-                <button id="enviar" type="submit">Enviar</button>
-                <button id="actualizar" type="button" onclick="cargarMensajes()">Actualizar Chat</button>
+                <div class="grupo-entrada">
+                    <textarea id="mensaje" placeholder="Escribe un mensaje" required></textarea>
+                </div>
+                <div class="botones">
+                    <button type="submit" class="btn btn-primario">Enviar</button>
+                    <button type="button" class="btn btn-secundario" onclick="cargarMensajes()">Actualizar</button>
+                </div>
             </form>
+            <div id="status" class="status"></div>
         </div>
-        
-        <div class="status" id="status"></div>
     </div>
 
     <script>
         function mostrarStatus(mensaje, tipo = 'info') {
             const status = document.getElementById('status');
-            status.textContent = mensaje;
-            status.className = 'status ' + tipo;
-            setTimeout(() => status.textContent = '', 3000);
+            if (status) {
+                status.textContent = mensaje;
+                status.className = 'status ' + tipo;
+                setTimeout(() => status.textContent = '', 3000);
+            }
         }
 
         function cargarMensajes() {
@@ -125,19 +130,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                         return;
                     }
                     
-                    const container = document.getElementById('messages');
+                    const container = document.getElementById('mensajes');
+                    if (!container) return;
+                    
                     container.innerHTML = '';
                     
                     if (data.messages && data.messages.length > 0) {
                         data.messages.forEach(msg => {
                             const div = document.createElement('div');
-                            div.className = 'message';
-                            div.innerHTML = `<strong>${msg.usuario}:</strong> ${msg.mensaje} <small>(${msg.timestamp})</small>`;
+                            div.className = 'mensaje usuario-' + (Math.random() > 0.5 ? '1' : '2');
+                            div.innerHTML = `
+                                <div class="usuario">${msg.usuario}</div>
+                                <div class="contenido-mensaje">${msg.mensaje}</div>
+                                <div class="timestamp">${msg.timestamp}</div>
+                            `;
                             container.appendChild(div);
                         });
                         container.scrollTop = container.scrollHeight;
                     } else {
-                        container.innerHTML = '<div class="message"><strong>Sistema:</strong> No hay mensajes aún</div>';
+                        container.innerHTML = '<div class="sin-mensajes">No hay mensajes aún</div>';
                     }
                     
                     mostrarStatus('Mensajes actualizados', 'success');
@@ -147,13 +158,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                 });
         }
 
-        function enviarMensaje() {
+        function enviarMensaje(event) {
+            if (event) event.preventDefault();
+            
             const usuario = document.getElementById('usuario').value.trim();
             const mensaje = document.getElementById('mensaje').value.trim();
             
             if (!usuario || !mensaje) {
                 mostrarStatus('Por favor completa todos los campos', 'error');
-                return;
+                return false;
             }
             
             const formData = new FormData();
@@ -179,13 +192,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
             .catch(error => {
                 mostrarStatus('Error de envío: ' + error.message, 'error');
             });
+            
+            return false;
         }
 
         // Cargar mensajes al inicio
-        cargarMensajes();
-        
-        // Auto-actualizar cada 10 segundos
-        setInterval(cargarMensajes, 10000);
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarMensajes();
+            
+            // Auto-actualizar cada 10 segundos
+            setInterval(cargarMensajes, 10000);
+        });
     </script>
 </body>
 </html>
