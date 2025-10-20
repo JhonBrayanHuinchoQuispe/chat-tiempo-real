@@ -3,24 +3,9 @@
     "description": "Chat en tiempo real con PHP",
     "type": "project",
     "require": {
-        "php": ">=7.4",
-        "ext-json": "*",
-        "ext-pdo": "*",
-        "ext-pdo_mysql": "*"
+        "php": ">=7.4"
     },
     "scripts": {
-        "start": "php -S 0.0.0.0:$PORT",
-        "heroku-postbuild": "echo 'Build completed'"
-    },
-    "config": {
-        "platform": {
-            "php": "7.4"
-        }
-    },
-    "extra": {
-        "heroku": {
-            "document-root": ".",
-            "index-document": "index.php"
-        }
+        "start": "php -S 0.0.0.0:$PORT"
     }
 }
