@@ -1,7 +1,8 @@
 <?php
-// ===== CHAT SIMPLE SIN PUSHER ===== 
-// Versión 2.0 - Forzar redespliegue
-// ACTUALIZACIÓN: Sincronización GitHub - Sin Pusher
+// ===== CHAT MODERNO Y BONITO ===== 
+// Versión 3.0 - DISEÑO COMPLETAMENTE NUEVO
+// ACTUALIZACIÓN: CSS Moderno con gradientes y animaciones
+// FORZAR REDESPLIEGUE COMPLETO
 header('Content-Type: text/html; charset=utf-8');
 
 // Configuración de base de datos
