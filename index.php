@@ -79,28 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Simple</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f0f2f5; }
-        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .header { background: #4267B2; color: white; padding: 20px; text-align: center; }
-        .messages { height: 400px; overflow-y: auto; padding: 20px; border-bottom: 1px solid #eee; }
-        .message { margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; }
-        .message strong { color: #4267B2; }
-        .form { padding: 20px; }
-        .form input, .form textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        .form button { width: 100%; padding: 12px; background: #4267B2; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        .form button:hover { background: #365899; }
-        .status { padding: 10px; text-align: center; font-size: 14px; }
-        .error { color: red; }
-        .success { color: green; }
-    </style>
+    <title>💬 Chat Tiempo Real - Moderno</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="static/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>💬 Chat Simple</h1>
-            <p>Sin tiempo real - Actualización manual</p>
+            <h1>💬 Chat Tiempo Real</h1>
+            <p>Conectado y funcionando perfectamente</p>
         </div>
         
         <div class="messages" id="messages">
@@ -110,10 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         </div>
         
         <div class="form">
-            <input type="text" id="usuario" placeholder="Tu nombre" required>
-            <textarea id="mensaje" placeholder="Escribe tu mensaje..." rows="3" required></textarea>
-            <button onclick="enviarMensaje()">Enviar Mensaje</button>
-            <button onclick="cargarMensajes()" style="background: #42b883; margin-top: 10px;">Actualizar Chat</button>
+            <input type="text" id="usuario" placeholder="👤 Tu nombre" required>
+            <textarea id="mensaje" placeholder="✍️ Escribe tu mensaje..." rows="3" required></textarea>
+            <button onclick="enviarMensaje()">🚀 Enviar Mensaje</button>
+            <button onclick="cargarMensajes()">🔄 Actualizar Chat</button>
         </div>
         
         <div class="status" id="status"></div>
