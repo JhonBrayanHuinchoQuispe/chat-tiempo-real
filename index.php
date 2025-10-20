@@ -1,8 +1,5 @@
 <?php
-// ===== CHAT MODERNO Y BONITO ===== 
-// Versión 3.0 - DISEÑO COMPLETAMENTE NUEVO
-// ACTUALIZACIÓN: CSS Moderno con gradientes y animaciones
-// FORZAR REDESPLIEGUE COMPLETO
+// CHAT EXACTO COMO IMAGEN DE REFERENCIA
 header('Content-Type: text/html; charset=utf-8');
 
 // Configuración de base de datos
@@ -100,14 +97,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                     <input type="text" id="usuario" placeholder="Tu nombre" required>
                 </div>
                 <div class="grupo-entrada">
-                    <textarea id="mensaje" placeholder="Escribe un mensaje" required></textarea>
+                    <textarea id="mensaje" placeholder="Escribe un mensaje..." required></textarea>
                 </div>
                 <div class="botones">
                     <button type="submit" class="btn btn-primario">Enviar</button>
                     <button type="button" class="btn btn-secundario" onclick="cargarMensajes()">Actualizar</button>
                 </div>
             </form>
-            <div id="status" class="status"></div>
         </div>
     </div>
 
@@ -139,10 +135,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                             
                             const div = document.createElement('div');
                             div.className = 'mensaje usuario-' + usuariosColores[msg.usuario];
+                            
+                            // Formatear timestamp
+                            const fecha = new Date(msg.timestamp);
+                            const tiempo = fecha.toLocaleTimeString('es-ES', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                            
                             div.innerHTML = `
                                 <div class="usuario">${msg.usuario}</div>
                                 <div class="contenido-mensaje">${msg.mensaje}</div>
-                                <div class="timestamp">${msg.timestamp}</div>
+                                <div class="timestamp">${tiempo}</div>
                             `;
                             container.appendChild(div);
                         });
@@ -196,8 +200,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         document.addEventListener('DOMContentLoaded', function() {
             cargarMensajes();
             
-            // Auto-actualizar cada 5 segundos (más frecuente)
-            setInterval(cargarMensajes, 5000);
+            // Auto-actualizar cada 3 segundos
+            setInterval(cargarMensajes, 3000);
+        });
+
+        // Enter para enviar mensaje
+        document.getElementById('mensaje').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                enviarMensaje();
+            }
         });
     </script>
 </body>

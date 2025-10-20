@@ -1,4 +1,4 @@
-/* DISEÑO EXACTO COMO IMAGEN DE REFERENCIA - v6.0 */
+/* DISEÑO EXACTO COMO IMAGEN DE REFERENCIA */
 * {
     margin: 0;
     padding: 0;
@@ -7,20 +7,21 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #e5e5ea;
-    color: #333;
-    line-height: 1.4;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
 }
 
 .contenedor-chat {
-    max-width: 400px;
-    margin: 0 auto;
+    width: 375px;
+    height: 667px;
     background: white;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border-radius: 25px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     overflow: hidden;
-    height: 600px;
     display: flex;
     flex-direction: column;
 }
@@ -28,13 +29,13 @@ body {
 .encabezado {
     background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
     color: white;
-    padding: 20px;
+    padding: 25px 20px 20px;
     text-align: center;
-    border-radius: 20px 20px 0 0;
+    position: relative;
 }
 
 .encabezado h1 {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     margin: 0;
 }
@@ -42,46 +43,49 @@ body {
 .area-mensajes {
     flex: 1;
     overflow-y: auto;
-    padding: 15px;
-    background: #f8f8f8;
+    padding: 20px;
+    background: #f8f9fa;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 }
 
 .mensaje {
-    max-width: 75%;
-    padding: 10px 15px;
-    border-radius: 18px;
+    max-width: 280px;
+    padding: 12px 16px;
+    border-radius: 20px;
     word-wrap: break-word;
     position: relative;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .mensaje.usuario-1 {
-    background: #4a90e2;
+    background: #007AFF;
     color: white;
     align-self: flex-end;
-    border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 6px;
+    margin-left: 60px;
 }
 
 .mensaje.usuario-2 {
-    background: #e9ecef;
-    color: #333;
+    background: #E5E5EA;
+    color: #000;
     align-self: flex-start;
-    border-bottom-left-radius: 4px;
+    border-bottom-left-radius: 6px;
+    margin-right: 60px;
 }
 
 .usuario {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     opacity: 0.8;
 }
 
 .mensaje.usuario-1 .usuario {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.9);
 }
 
 .mensaje.usuario-2 .usuario {
@@ -89,107 +93,112 @@ body {
 }
 
 .contenido-mensaje {
-    font-size: 14px;
-    line-height: 1.3;
-    margin-bottom: 2px;
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: 4px;
 }
 
 .timestamp {
-    font-size: 10px;
+    font-size: 11px;
     opacity: 0.6;
     align-self: flex-end;
+    margin-top: 2px;
 }
 
 .sin-mensajes {
     text-align: center;
     color: #999;
     font-style: italic;
-    padding: 40px 20px;
+    padding: 60px 20px;
     margin: auto;
 }
 
 .area-entrada {
-    padding: 15px;
+    padding: 20px;
     background: white;
     border-top: 1px solid #e0e0e0;
 }
 
 .grupo-entrada {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .grupo-entrada input {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    font-size: 14px;
-    background: #f8f8f8;
-    transition: all 0.2s;
+    padding: 14px 18px;
+    border: 1px solid #E5E5EA;
+    border-radius: 25px;
+    font-size: 16px;
+    background: #F2F2F7;
+    transition: all 0.3s ease;
 }
 
 .grupo-entrada textarea {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 15px;
-    font-size: 14px;
-    background: #f8f8f8;
+    padding: 14px 18px;
+    border: 1px solid #E5E5EA;
+    border-radius: 20px;
+    font-size: 16px;
+    background: #F2F2F7;
     resize: none;
-    height: 40px;
-    transition: all 0.2s;
+    height: 45px;
+    transition: all 0.3s ease;
+    font-family: inherit;
 }
 
 .grupo-entrada input:focus,
 .grupo-entrada textarea:focus {
     outline: none;
-    border-color: #4a90e2;
+    border-color: #007AFF;
     background: white;
+    box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
 }
 
 .botones {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
 .btn {
-    padding: 12px 20px;
+    padding: 14px 24px;
     border: none;
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
 }
 
 .btn-primario {
-    background: #4a90e2;
+    background: #007AFF;
     color: white;
     flex: 1;
 }
 
 .btn-primario:hover {
-    background: #357abd;
-    transform: translateY(-1px);
+    background: #0056CC;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,122,255,0.3);
 }
 
 .btn-secundario {
-    background: #e9ecef;
+    background: #E5E5EA;
     color: #666;
-    padding: 12px 16px;
+    padding: 14px 20px;
 }
 
 .btn-secundario:hover {
-    background: #dee2e6;
+    background: #D1D1D6;
+    transform: translateY(-1px);
 }
 
 .status {
-    display: none; /* Ocultar mensajes de estado molestos */
+    display: none;
 }
 
 /* Scrollbar personalizado */
 .area-mensajes::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
 }
 
 .area-mensajes::-webkit-scrollbar-track {
@@ -197,53 +206,43 @@ body {
 }
 
 .area-mensajes::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 2px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 3px;
 }
 
 .area-mensajes::-webkit-scrollbar-thumb:hover {
-    background: #999;
-}
-
-/* Scrollbar personalizado */
-.area-mensajes::-webkit-scrollbar {
-    width: 4px;
-}
-
-.area-mensajes::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.area-mensajes::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 2px;
-}
-
-.area-mensajes::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
+    background: rgba(0,0,0,0.3);
 }
 
 /* Responsive */
 @media (max-width: 480px) {
     .contenedor-chat {
-        margin: 10px;
-        max-width: none;
-    }
-    
-    .campos-entrada {
-        flex-direction: column;
-    }
-    
-    #usuario,
-    #mensaje {
         width: 100%;
+        height: 100vh;
+        border-radius: 0;
+    }
+    
+    body {
+        padding: 0;
     }
 }
 
-/* Sin mensajes */
-.sin-mensajes {
-    text-align: center;
-    color: #999;
-    font-style: italic;
-    padding: 40px 20px;
+/* Animaciones */
+.mensaje {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn:active {
+    transform: scale(0.98);
 }
